@@ -4,10 +4,16 @@ import 'package:covaccine/providers/sessionsData.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-class HomePage extends StatelessWidget {
-  late String pincode;
-  late String date;
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
 
+class _HomePageState extends State<HomePage> {
+   String pincode='';
+
+   String date='';
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     final sessions = Provider.of<SessionsData>(context).session;
@@ -122,7 +128,28 @@ class HomePage extends StatelessWidget {
                     color: Colors.greenAccent,
                     shape: CircleBorder(),
                     onPressed: () async{
+                      setState(() {
+                                              isLoading=true;
+                                            });
+                      try{
                     await Provider.of<SessionsData>(context,listen: false).getSessions(pincode, date);
+                      }catch(e){
+                        showDialog(context: context, builder: (_){
+                          return AlertDialog(
+                            title: Text('Error Occured'),
+                            content: Text(e.toString()),
+                            actions: [
+                              TextButton(
+                                onPressed: (){Navigator.pop(context);}, 
+                                child: Text('OK'))
+                            ],
+                          );
+                        });
+                      }finally{
+                        setState(() {
+                                                  isLoading=false;
+                                                });
+                      }
                     },
                     child: Padding(
                         padding: const EdgeInsets.all(10),
@@ -132,19 +159,25 @@ class HomePage extends StatelessWidget {
               ],
             ),
           ),
-          Expanded(
+          isLoading?Expanded(child: Center(child: CircularProgressIndicator(),)):
+           Expanded(
           child:  sessions.length == 0
               ? Text('No Match Found')
-              : ListView.builder(
-                  itemCount: sessions.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    List s = sessions;
-                    return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: SessionUi(
-                            session: s[index],));
-                  },
-                ),
+              : RefreshIndicator(
+                 onRefresh: ()async{
+               await Provider.of<SessionsData>(context,listen: false).getSessions(pincode, date);
+             },
+                child: ListView.builder(
+                    itemCount: sessions.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      List s = sessions;
+                      return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SessionUi(
+                              session: s[index],));
+                    },
+                  ),
+              ),
         ),
         ],
       ),

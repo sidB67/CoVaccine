@@ -11,13 +11,20 @@ class SessionsData with ChangeNotifier{
     final url = Uri.parse( "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=$pincode&date=$date");
     try{
     final response = await http.get(url);
-    final responseData = jsonDecode(response.body);
+    if(response.statusCode ==200){
+      final responseData = jsonDecode(response.body);
     Iterable extractedData = responseData["sessions"];
     List loadedSessions = extractedData.map((json) => Session.fromJson(json)).toList();
     _sessions = loadedSessions;
+    }else{
+      final responseData = jsonDecode(response.body);
+      var error = responseData["error"];
+      throw error;
+    }
+    
     print(_sessions.length);
     }catch(e){
-      print(e);
+      throw e;
     }
      notifyListeners();
  }
