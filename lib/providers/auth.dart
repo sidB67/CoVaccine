@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
@@ -5,11 +6,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:crypto/crypto.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 class Auth extends ChangeNotifier{
   String? _token;
  late String txnid;
-
+Timer? _authTimer;
   bool get isAuth{
+    
       return _token!=null;
   }
 
@@ -53,7 +56,12 @@ Future<void> saveAndLaunchFile(List<int> bytes, String fileName) async {
                }
                ) );
                _token = jsonDecode(response.body)['token'];
+               final userData = json.encode({'token':_token});
+               final prefs = await SharedPreferences.getInstance();
+               prefs.setString('userData', userData);
+               _autoLogout();
                notifyListeners();
+               
  }
 
 Future<void> getCertificate(String benefID)async{
@@ -66,4 +74,34 @@ Future<void> getCertificate(String benefID)async{
                   // print(response.body);
                   await saveAndLaunchFile(response.bodyBytes, 'Certificate.pdf');
 }
+void logout()async{
+  _token = null;
+  notifyListeners();
+  if(_authTimer != null){
+      _authTimer?.cancel();
+      _authTimer = null;
+    }
+    final prefs = await SharedPreferences.getInstance();
+    prefs.clear();
 }
+void _autoLogout(){
+    if(_authTimer != null){
+      _authTimer?.cancel();
+    }
+   
+   _authTimer =Timer(Duration(minutes: 15 ), logout);
+  }
+   Future<bool> checkLogin() async {
+    final prefs = await SharedPreferences.getInstance();
+    if(!prefs.containsKey('userData')){
+      return false;
+    }
+    final extractedData = json.decode(prefs.getString('userData')!) as Map<String,dynamic>;
+    _token = extractedData['token'];
+    
+    notifyListeners();
+    _autoLogout();
+    return true ; 
+  }
+}
+
