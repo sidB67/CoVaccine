@@ -1,4 +1,6 @@
+import 'package:covaccine/UI/LandingPage.dart';
 import 'package:covaccine/UI/homepage.dart';
+import 'package:covaccine/providers/auth.dart';
 import 'package:covaccine/providers/sessionsData.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +14,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider.value(value: SessionsData())
+        ChangeNotifierProvider.value(value: SessionsData()),
+        ChangeNotifierProvider.value(value: Auth())
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -20,7 +23,11 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.white
           
         ),
-        home: HomePage(),
+        routes: {
+          'home-page': (ctx)=>HomePage(),
+          'land-page': (ctx)=>LandingPage()
+        },
+        initialRoute: 'home-page',
       ),
     );
   }

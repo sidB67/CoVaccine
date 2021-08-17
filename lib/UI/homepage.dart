@@ -4,6 +4,7 @@ import 'package:covaccine/providers/sessionsData.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'BottomAppBar.dart' as bab;
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -21,6 +22,7 @@ class _HomePageState extends State<HomePage> {
     SizeConfig().init(context);
     print('build');
     return Scaffold(
+      bottomNavigationBar: bab.BottomAppBar(selectedIndex: 0,),
       appBar: AppBar(
         title: Text('CoVaccine'),
         centerTitle: true,
