@@ -6,16 +6,19 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class LandingPage extends StatelessWidget {
-  const LandingPage({ Key? key }) : super(key: key);
+  const LandingPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     bool isAuth = Provider.of<Auth>(context).isAuth;
-    return isAuth? CertificatePage() :FutureBuilder(
-          future:  Provider.of<Auth>(context).checkLogin(),
-          builder: (ctx,authResultSnapshot)=>
-          authResultSnapshot.connectionState == ConnectionState.waiting
-          ? SplashScreen()
-          : AuthPage(),);
+    return isAuth
+        ? CertificatePage()
+        : FutureBuilder(
+            future: Provider.of<Auth>(context).checkLogin(),
+            builder: (ctx, authResultSnapshot) =>
+                authResultSnapshot.connectionState == ConnectionState.waiting
+                    ? SplashScreen()
+                    : AuthPage(),
+          );
   }
 }

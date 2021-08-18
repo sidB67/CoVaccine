@@ -5,25 +5,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'BottomAppBar.dart' as bab;
+
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-   String pincode='';
+  String pincode = '';
 
-   String date='';
+  String date = '';
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     final sessions = Provider.of<SessionsData>(context).session;
-    
+
     SizeConfig().init(context);
     print('build');
     return Scaffold(
-      bottomNavigationBar: bab.BottomAppBar(selectedIndex: 0,),
+      bottomNavigationBar: bab.BottomAppBar(
+        selectedIndex: 0,
+      ),
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('CoVaccine'),
         centerTitle: true,
       ),
@@ -74,7 +78,6 @@ class _HomePageState extends State<HomePage> {
                               ],
                               decoration: InputDecoration(
                                   border: InputBorder.none, hintText: "110051"),
-
                               onChanged: (value) => pincode = value,
                             )),
                       ],
@@ -111,8 +114,7 @@ class _HomePageState extends State<HomePage> {
                                       border: InputBorder.none,
                                       hintText: "1-05-2021"),
                                   onChanged: (value) {
-                                    date=value;
-
+                                    date = value;
                                   },
                                 ),
                               ],
@@ -129,28 +131,33 @@ class _HomePageState extends State<HomePage> {
                   child: MaterialButton(
                     color: Colors.greenAccent,
                     shape: CircleBorder(),
-                    onPressed: () async{
+                    onPressed: () async {
                       setState(() {
-                                              isLoading=true;
-                                            });
-                      try{
-                    await Provider.of<SessionsData>(context,listen: false).getSessions(pincode, date);
-                      }catch(e){
-                        showDialog(context: context, builder: (_){
-                          return AlertDialog(
-                            title: Text('Error Occured'),
-                            content: Text(e.toString()),
-                            actions: [
-                              TextButton(
-                                onPressed: (){Navigator.pop(context);}, 
-                                child: Text('OK'))
-                            ],
-                          );
-                        });
-                      }finally{
+                        isLoading = true;
+                      });
+                      try {
+                        await Provider.of<SessionsData>(context, listen: false)
+                            .getSessions(pincode, date);
+                      } catch (e) {
+                        showDialog(
+                            context: context,
+                            builder: (_) {
+                              return AlertDialog(
+                                title: Text('Error Occured'),
+                                content: Text(e.toString()),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text('OK'))
+                                ],
+                              );
+                            });
+                      } finally {
                         setState(() {
-                                                  isLoading=false;
-                                                });
+                          isLoading = false;
+                        });
                       }
                     },
                     child: Padding(
@@ -161,26 +168,33 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          isLoading?Expanded(child: Center(child: CircularProgressIndicator(),)):
-           Expanded(
-          child:  sessions.length == 0
-              ? Text('No Match Found')
-              : RefreshIndicator(
-                 onRefresh: ()async{
-               await Provider.of<SessionsData>(context,listen: false).getSessions(pincode, date);
-             },
-                child: ListView.builder(
-                    itemCount: sessions.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      List s = sessions;
-                      return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SessionUi(
-                              session: s[index],));
-                    },
-                  ),
-              ),
-        ),
+          isLoading
+              ? Expanded(
+                  child: Center(
+                  child: CircularProgressIndicator(),
+                ))
+              : Expanded(
+                  child: sessions.length == 0
+                      ? Text('No Match Found')
+                      : RefreshIndicator(
+                          onRefresh: () async {
+                            await Provider.of<SessionsData>(context,
+                                    listen: false)
+                                .getSessions(pincode, date);
+                          },
+                          child: ListView.builder(
+                            itemCount: sessions.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              List s = sessions;
+                              return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SessionUi(
+                                    session: s[index],
+                                  ));
+                            },
+                          ),
+                        ),
+                ),
         ],
       ),
     );

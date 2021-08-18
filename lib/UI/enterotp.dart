@@ -4,20 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'BottomAppBar.dart' as bab;
 
-class AuthPage extends StatefulWidget {
+class EnterOTP extends StatefulWidget {
   @override
-  _AuthPageState createState() => _AuthPageState();
+  _EnterOTPState createState() => _EnterOTPState();
 }
 
-class _AuthPageState extends State<AuthPage> {
-  String phNo = '';
+class _EnterOTPState extends State<EnterOTP> {
+  String otp = '';
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Continue with Mobile'),
+        title: Text('Confirm OTP'),
         automaticallyImplyLeading: false,
       ),
       bottomNavigationBar: bab.BottomAppBar(
@@ -35,7 +35,7 @@ class _AuthPageState extends State<AuthPage> {
                         EdgeInsets.only(top: SizeConfig.safeBlockVertical * 50),
                     width: SizeConfig.safeBlockHorizontal * 300,
                     height: SizeConfig.safeBlockVertical * 300,
-                    child: Image.asset('asset/phone.png'),
+                    child: Image.asset('asset/otp.png'),
                   ),
                 ),
                 Container(
@@ -58,10 +58,10 @@ class _AuthPageState extends State<AuthPage> {
                               border: InputBorder.none,
                               contentPadding: EdgeInsets.only(
                                   left: SizeConfig.safeBlockHorizontal * 10),
-                              hintText: 'Enter your mobile number',
+                              hintText: 'Enter your OTP',
                               hintStyle: TextStyle(color: Colors.black)),
                           onChanged: (value) {
-                            phNo = value;
+                            otp = value;
                           },
                         ),
                       ),
@@ -69,13 +69,15 @@ class _AuthPageState extends State<AuthPage> {
                           flex: 1,
                           child: GestureDetector(
                             onTap: () async {
+                              print('pressed');
                               setState(() {
                                 isLoading = true;
                               });
                               try {
                                 await Provider.of<Auth>(context, listen: false)
-                                    .getOTP(phNo);
-                                Navigator.pushNamed(context, 'enter-otp');
+                                    .submitOtp(otp);
+                                Navigator.pushReplacementNamed(
+                                    context, 'land-page');
                               } catch (e) {
                                 showDialog(
                                     context: context,
@@ -105,7 +107,7 @@ class _AuthPageState extends State<AuthPage> {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Center(
-                                child: Text('Get OTP'),
+                                child: Text('Submit OTP'),
                               ),
                             ),
                           )),
