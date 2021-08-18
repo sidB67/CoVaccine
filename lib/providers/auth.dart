@@ -69,7 +69,7 @@ class Auth extends ChangeNotifier {
 
   Future<void> getCertificate(String benefID) async {
     final url = Uri.parse(
-      'https://cdn-api.co-vin.in/api/v2/registration/certificate/public/download?beneficiary_reference_id=51647621450660',
+      'https://cdn-api.co-vin.in/api/v2/registration/certificate/public/download?beneficiary_reference_id=$benefID',
     );
     var response = await http.get(url, headers: {
       "accept": "application/pdf",
