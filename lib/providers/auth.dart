@@ -71,14 +71,22 @@ class Auth extends ChangeNotifier {
     final url = Uri.parse(
       'https://cdn-api.co-vin.in/api/v2/registration/certificate/public/download?beneficiary_reference_id=$benefID',
     );
-    var response = await http.get(url, headers: {
+    try{
+      var response = await http.get(url, headers: {
       "accept": "application/pdf",
       "content-type": "application/json",
       "authorization": "Bearer $_token"
     });
-
-    // print(response.body);
-    await saveAndLaunchFile(response.bodyBytes, 'Certificate.pdf');
+    if(response.statusCode==200){
+      await saveAndLaunchFile(response.bodyBytes, 'Certificate.pdf');
+    }else{
+      throw 'Please Check Benefeciary ID';
+    }
+    
+    }catch(e){
+      throw e;
+    }
+    
   }
 
   void logout() async {
