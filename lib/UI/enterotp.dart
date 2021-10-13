@@ -17,7 +17,8 @@ class _EnterOTPState extends State<EnterOTP> {
     SizeConfig().init(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Confirm OTP'),
+        backgroundColor: Colors.white,
+        title: Text('Confirm OTP',style: TextStyle(color: Colors.black)),
         automaticallyImplyLeading: false,
       ),
       bottomNavigationBar: bab.BottomAppBar(

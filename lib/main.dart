@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
-        theme: ThemeData(primaryColor: Colors.white),
+        theme: ThemeData(primaryColor: Colors.white,primaryColorDark: Colors.white,primaryColorLight: Colors.white),
         routes: {
           'home-page': (ctx) => HomePage(),
           'land-page': (ctx) => LandingPage(),
