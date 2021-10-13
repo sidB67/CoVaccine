@@ -1,4 +1,4 @@
-import 'package:covaccine/UI/Certificate.dart';
+
 import 'package:covaccine/UI/LandingPage.dart';
 import 'package:covaccine/UI/enterotp.dart';
 import 'package:covaccine/UI/homepage.dart';

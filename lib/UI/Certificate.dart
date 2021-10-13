@@ -17,7 +17,8 @@ class _CertificatePageState extends State<CertificatePage> {
     SizeConfig().init(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Certificate'),
+        backgroundColor: Colors.white,
+        title: Text('Certificate',style: TextStyle(color: Colors.black)),
         actions: [
           IconButton(
             icon: Icon(Icons.logout),
