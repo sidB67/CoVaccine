@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'BottomAppBar.dart' as bab;
 import 'package:intl/intl.dart';
-
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -20,12 +19,14 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    date = formatter.format(DateTime.now());
-    year = int.parse(formatter.format(DateTime.now()).split('-').last);
-    
-    setState(() {});
+   date = formatter.format(DateTime.now());
+   year = int.parse(formatter.format(DateTime.now()).split('-').last);
+    print(date);
+    print(year);
+    setState(() {
+      
+    });
   }
-
   void _pickDateDialog() {
     showDatePicker(
             context: context,
@@ -33,10 +34,9 @@ class _HomePageState extends State<HomePage> {
             //which date will display when user open the picker
             firstDate: DateTime.now(),
             //what will be the previous supported year in picker
-            lastDate: DateTime(year + 1)
-            //what will be the up to supported date in picker
-            )
-        .then((pickedDate) {
+            lastDate: DateTime(year+1)
+                 //what will be the up to supported date in picker
+        ).then((pickedDate) {
       //then usually do the future job
       if (pickedDate == null) {
         //if user tap cancel then this function will stop
@@ -49,24 +49,21 @@ class _HomePageState extends State<HomePage> {
       });
     });
   }
-
+  
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     final sessions = Provider.of<SessionsData>(context).session;
 
     SizeConfig().init(context);
-    
+    print('build');
     return Scaffold(
       bottomNavigationBar: bab.BottomAppBar(
         selectedIndex: 0,
       ),
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text(
-          'CoVaccine',
-          style: TextStyle(color: Colors.black),
-        ),
+        title: Text('CoVaccine',style: TextStyle(color: Colors.black),),
         centerTitle: true,
         backgroundColor: Colors.white,
       ),
@@ -143,18 +140,21 @@ class _HomePageState extends State<HomePage> {
                           GestureDetector(
                             onTap: _pickDateDialog,
                             child: Container(
-                                width: double.infinity,
-                                height: 48,
-                                padding: EdgeInsets.only(left: 12),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(20),
+                              width: double.infinity,
+                              height: 48,
+                              padding: EdgeInsets.only(left: 12),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                '$date',
+                                style: TextStyle(
+                                  fontSize: 16
                                 ),
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  '$date',
-                                  style: TextStyle(fontSize: 16),
-                                )),
+                              )
+                            ),
                           ),
                         ],
                       ),

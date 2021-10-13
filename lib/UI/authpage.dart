@@ -18,7 +18,7 @@ class _AuthPageState extends State<AuthPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text('Continue with Mobile',style: TextStyle(color: Colors.black)),
+        title: Text('Continue with Mobile',style: TextStyle(color: Colors.black),),
         automaticallyImplyLeading: false,
       ),
       bottomNavigationBar: bab.BottomAppBar(
