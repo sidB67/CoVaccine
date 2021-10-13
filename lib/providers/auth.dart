@@ -27,6 +27,7 @@ class Auth extends ChangeNotifier {
     final file = File('$path/$fileName');
     await file.writeAsBytes(bytes, flush: true);
     OpenFile.open('$path/$fileName');
+   
   }
 
   Future<void> getOTP(String phNo) async {

@@ -6,7 +6,7 @@ import 'package:covaccine/providers/auth.dart';
 import 'package:covaccine/providers/sessionsData.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:feedback/feedback.dart';
 void main() {
   runApp(MyApp());
 }
@@ -20,15 +20,17 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: SessionsData()),
         ChangeNotifierProvider.value(value: Auth())
       ],
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(primaryColor: Colors.white),
-        routes: {
-          'home-page': (ctx) => HomePage(),
-          'land-page': (ctx) => LandingPage(),
-          'enter-otp': (ctx) => EnterOTP(),
-        },
-        initialRoute: 'home-page',
+      child: BetterFeedback(
+        child: MaterialApp(
+          title: 'Flutter Demo',
+          theme: ThemeData(primaryColor: Colors.white),
+          routes: {
+            'home-page': (ctx) => HomePage(),
+            'land-page': (ctx) => LandingPage(),
+            'enter-otp': (ctx) => EnterOTP(),
+          },
+          initialRoute: 'home-page',
+        ),
       ),
     );
   }

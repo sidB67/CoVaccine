@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'BottomAppBar.dart' as bab;
-
+import 'package:intl/intl.dart';
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -13,8 +13,43 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String pincode = '';
-
+  var formatter = DateFormat('dd-MM-yyyy');
   String date = '';
+  int year = 2021;
+  @override
+  void initState() {
+    super.initState();
+   date = formatter.format(DateTime.now());
+   year = int.parse(formatter.format(DateTime.now()).split('-').last);
+    print(date);
+    print(year);
+    setState(() {
+      
+    });
+  }
+  void _pickDateDialog() {
+    showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            //which date will display when user open the picker
+            firstDate: DateTime.now(),
+            //what will be the previous supported year in picker
+            lastDate: DateTime(year+1)
+                 //what will be the up to supported date in picker
+        ).then((pickedDate) {
+      //then usually do the future job
+      if (pickedDate == null) {
+        //if user tap cancel then this function will stop
+        return;
+      }
+      setState(() {
+        //for rebuilding the ui
+        date = formatter.format(pickedDate);
+        print(date);
+      });
+    });
+  }
+  
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
@@ -28,8 +63,9 @@ class _HomePageState extends State<HomePage> {
       ),
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('CoVaccine'),
+        title: Text('CoVaccine',style: TextStyle(color: Colors.black),),
         centerTitle: true,
+        backgroundColor: Colors.white,
       ),
       body: Column(
         children: [
@@ -101,23 +137,23 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           // SizedBox(height:10),
-                          Container(
-                            padding: EdgeInsets.only(left: 12),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Column(
-                              children: [
-                                TextField(
-                                  decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      hintText: "1-05-2021"),
-                                  onChanged: (value) {
-                                    date = value;
-                                  },
+                          GestureDetector(
+                            onTap: _pickDateDialog,
+                            child: Container(
+                              width: double.infinity,
+                              height: 48,
+                              padding: EdgeInsets.only(left: 12),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                '$date',
+                                style: TextStyle(
+                                  fontSize: 16
                                 ),
-                              ],
+                              )
                             ),
                           ),
                         ],
