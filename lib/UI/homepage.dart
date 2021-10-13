@@ -77,7 +77,7 @@ class _HomePageState extends State<HomePage> {
             ),
             color: Colors.grey[200],
             width: double.infinity,
-            height: SizeConfig.safeBlockVertical * 200,
+            height: SizeConfig.safeBlockVertical * 180,
             child: Column(
               children: [
                 Row(
