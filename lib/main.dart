@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
           'land-page': (ctx) => LandingPage(),
           'enter-otp': (ctx) => EnterOTP(),
         },
-        initialRoute: 'home-page',
+        initialRoute: 'enter-otp',
       ),
     );
   }

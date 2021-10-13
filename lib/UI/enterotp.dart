@@ -55,6 +55,7 @@ class _EnterOTPState extends State<EnterOTP> {
                       Flexible(
                         flex: 2,
                         child: TextField(
+                          
                           decoration: InputDecoration(
                               border: InputBorder.none,
                               contentPadding: EdgeInsets.only(
@@ -62,14 +63,17 @@ class _EnterOTPState extends State<EnterOTP> {
                               hintText: 'Enter your OTP',
                               hintStyle: TextStyle(color: Colors.black)),
                           onChanged: (value) {
+                            setState(() {
+                              
                             otp = value;
+                            });
                           },
                         ),
                       ),
                       Expanded(
                           flex: 1,
                           child: GestureDetector(
-                            onTap: () async {
+                            onTap: otp.length ==6? () async {
                               print('pressed');
                               setState(() {
                                 isLoading = true;
@@ -100,11 +104,11 @@ class _EnterOTPState extends State<EnterOTP> {
                                   isLoading = false;
                                 });
                               }
-                            },
+                            }:null,
                             child: Container(
                               height: SizeConfig.safeBlockVertical * 50,
                               decoration: BoxDecoration(
-                                color: Colors.greenAccent,
+                                color: otp.length==6? Colors.greenAccent:Colors.grey,
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Center(
