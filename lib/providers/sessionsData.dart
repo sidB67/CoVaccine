@@ -36,3 +36,4 @@ class SessionsData with ChangeNotifier {
     return [..._sessions];
   }
 }
+

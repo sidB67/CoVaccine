@@ -12,7 +12,11 @@ class BottomAppBar extends StatelessWidget {
     void _onItemTapped(int index) {
       if (index == 0) {
         Navigator.pushNamed(context, 'home-page');
-      } else if (index == 1) {
+      }else if(index == 1){
+        Navigator.pushNamed(context, 'district-page');
+
+      } 
+      else if (index == 2) {
         Navigator.pushNamed(context, 'land-page');
       }
     }
@@ -31,6 +35,11 @@ class BottomAppBar extends StatelessWidget {
               Icons.home,
             ),
             label: 'Home'),
+        BottomNavigationBarItem(
+            icon: Icon(
+              Icons.search,
+            ),
+            label: 'Districts'),
         BottomNavigationBarItem(
             icon: Icon(
               Icons.star,

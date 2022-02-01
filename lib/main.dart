@@ -1,5 +1,6 @@
 import 'package:covaccine/UI/Certificate.dart';
 import 'package:covaccine/UI/LandingPage.dart';
+import 'package:covaccine/UI/district.dart';
 import 'package:covaccine/UI/enterotp.dart';
 import 'package:covaccine/UI/homepage.dart';
 import 'package:covaccine/providers/auth.dart';
@@ -27,8 +28,9 @@ class MyApp extends StatelessWidget {
           'home-page': (ctx) => HomePage(),
           'land-page': (ctx) => LandingPage(),
           'enter-otp': (ctx) => EnterOTP(),
+          'district-page': (ctx) => DistrictSearch(),
         },
-        initialRoute: 'enter-otp',
+        initialRoute: 'home-page',
       ),
     );
   }
