@@ -6,8 +6,9 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'BottomAppBar.dart' as bab;
+
 class DistrictSearch extends StatefulWidget {
-  const DistrictSearch({ Key? key }) : super(key: key);
+  const DistrictSearch({Key? key}) : super(key: key);
 
   @override
   _DistrictSearchState createState() => _DistrictSearchState();
@@ -21,13 +22,13 @@ class _DistrictSearchState extends State<DistrictSearch> {
   @override
   void initState() {
     super.initState();
-   date = formatter.format(DateTime.now());
-   year = int.parse(formatter.format(DateTime.now()).split('-').last);
-   
-    setState(() {
-      
-    });
+    date = formatter.format(DateTime.now());
+    year = int.parse(formatter.format(DateTime.now()).split('-').last);
+    initialiseState();
+
+    setState(() {});
   }
+
   void _pickDateDialog() {
     showDatePicker(
             context: context,
@@ -35,9 +36,10 @@ class _DistrictSearchState extends State<DistrictSearch> {
             //which date will display when user open the picker
             firstDate: DateTime.now(),
             //what will be the previous supported year in picker
-            lastDate: DateTime(year+1)
-                 //what will be the up to supported date in picker
-        ).then((pickedDate) {
+            lastDate: DateTime(year + 1)
+            //what will be the up to supported date in picker
+            )
+        .then((pickedDate) {
       //then usually do the future job
       if (pickedDate == null) {
         //if user tap cancel then this function will stop
@@ -50,24 +52,47 @@ class _DistrictSearchState extends State<DistrictSearch> {
       });
     });
   }
-  
+
+  void initialiseState() async {
+    await Provider.of<SessionsData>(context, listen: false).getStates();
+  }
+
+  List<DropdownMenuItem<int>> getMenuItems(List<States> states) {
+    List<DropdownMenuItem<int>> items = [];
+    states.forEach((element) {
+      items.add(
+        DropdownMenuItem(
+          child: Text(element.stateName),
+          value: element.stateId,
+        ),
+      );
+    });
+
+    return items;
+  }
+
+  var selectedState;
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     final sessions = Provider.of<SessionsData>(context).session;
+    final states = Provider.of<SessionsData>(context).states;
 
     SizeConfig().init(context);
     print('build');
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: (){
-        Provider.of<SessionsData>(context,listen: false).getStates();
+      floatingActionButton: FloatingActionButton(onPressed: () {
+        Provider.of<SessionsData>(context, listen: false).getStates();
       }),
       bottomNavigationBar: bab.BottomAppBar(
         selectedIndex: 1,
       ),
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('CoVaccine',style: TextStyle(color: Colors.black),),
+        title: Text(
+          'CoVaccine',
+          style: TextStyle(color: Colors.black),
+        ),
         centerTitle: true,
         backgroundColor: Colors.white,
       ),
@@ -86,83 +111,66 @@ class _DistrictSearchState extends State<DistrictSearch> {
               children: [
                 Row(
                   children: [
-                    Expanded(
-                        child: Column(
-                      // mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: FittedBox(
-                            child: Text(
-                              "Enter Pin Code",
-                              style: TextStyle(
-                                  color: Colors.black.withOpacity(.5),
-                                  fontSize: 14),
-                              textAlign: TextAlign.center,
-                            ),
+                    Flexible(
+                      child: Container(
+                          // height: 60,
+                          padding: EdgeInsets.only(left: 12),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
                           ),
-                        ),
-                        // SizedBox(height:10),
-                        Container(
-                            // height: 60,
-                            padding: EdgeInsets.only(left: 12),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: TextField(
-                              keyboardType: TextInputType.number,
-                              inputFormatters: [
-                                LengthLimitingTextInputFormatter(6)
-                              ],
-                              decoration: InputDecoration(
-                                  border: InputBorder.none, hintText: "110051"),
-                              onChanged: (value) => pincode = value,
-                            )),
-                      ],
-                    )),
-                    SizedBox(width: 10),
-                    Expanded(
-                      child: Column(
-                        // mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 8.0),
-                            child: FittedBox(
-                              child: Text(
-                                "Enter Date in the given format",
-                                style: TextStyle(
-                                    color: Colors.black.withOpacity(.5),
-                                    fontSize: 14),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                          // SizedBox(height:10),
-                          GestureDetector(
-                            onTap: _pickDateDialog,
-                            child: Container(
-                              width: double.infinity,
-                              height: 48,
-                              padding: EdgeInsets.only(left: 12),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                '$date',
-                                style: TextStyle(
-                                  fontSize: 16
-                                ),
-                              )
-                            ),
-                          ),
-                        ],
-                      ),
+                          child: DropdownButton<int>(
+                            hint: Text('Select the State'),
+                            value: selectedState,
+                            items: getMenuItems(states),
+                            onChanged: (value){
+                              setState(() {
+                                selectedState = value;
+                              });
+                            },
+                          )),
                     ),
+                    SizedBox(width: 10),
+                    // Expanded(
+                    //   child: Column(
+                    //     // mainAxisAlignment: MainAxisAlignment.start,
+                    //     crossAxisAlignment: CrossAxisAlignment.start,
+                    //     children: [
+                    //       Padding(
+                    //         padding: const EdgeInsets.only(bottom: 8.0),
+                    //         child: FittedBox(
+                    //           child: Text(
+                    //             "Enter Date in the given format",
+                    //             style: TextStyle(
+                    //                 color: Colors.black.withOpacity(.5),
+                    //                 fontSize: 14),
+                    //             textAlign: TextAlign.center,
+                    //           ),
+                    //         ),
+                    //       ),
+                    //       // SizedBox(height:10),
+                    //       GestureDetector(
+                    //         onTap: _pickDateDialog,
+                    //         child: Container(
+                    //           width: double.infinity,
+                    //           height: 48,
+                    //           padding: EdgeInsets.only(left: 12),
+                    //           decoration: BoxDecoration(
+                    //             color: Colors.white,
+                    //             borderRadius: BorderRadius.circular(20),
+                    //           ),
+                    //           alignment: Alignment.centerLeft,
+                    //           child: Text(
+                    //             '$date',
+                    //             style: TextStyle(
+                    //               fontSize: 16
+                    //             ),
+                    //           )
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                   ],
                 ),
                 Container(

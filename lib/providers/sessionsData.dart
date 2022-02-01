@@ -4,10 +4,10 @@ import 'package:covaccine/models/sessions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 class States{
-  final stateId;
+  final int stateId;
   final stateName;
   States({
-     this.stateId,
+     required this.stateId,
      this.stateName,
   });
   }
