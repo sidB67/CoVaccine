@@ -59,6 +59,9 @@ class _DistrictSearchState extends State<DistrictSearch> {
     SizeConfig().init(context);
     print('build');
     return Scaffold(
+      floatingActionButton: FloatingActionButton(onPressed: (){
+        Provider.of<SessionsData>(context,listen: false).getStates();
+      }),
       bottomNavigationBar: bab.BottomAppBar(
         selectedIndex: 1,
       ),

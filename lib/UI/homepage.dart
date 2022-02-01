@@ -21,8 +21,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
    date = formatter.format(DateTime.now());
    year = int.parse(formatter.format(DateTime.now()).split('-').last);
-    print(date);
-    print(year);
+   
     setState(() {
       
     });
