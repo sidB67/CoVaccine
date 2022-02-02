@@ -64,6 +64,7 @@ class _AuthPageState extends State<AuthPage> {
                                   left: SizeConfig.safeBlockHorizontal * 10),
                               hintText: 'Enter your mobile number',
                               hintStyle: TextStyle(color: Colors.black)),
+                              keyboardType: TextInputType.number,
                           onChanged: (value) {
                             phNo = value;
                           },

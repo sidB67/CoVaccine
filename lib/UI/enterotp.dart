@@ -62,6 +62,7 @@ class _EnterOTPState extends State<EnterOTP> {
                                   left: SizeConfig.safeBlockHorizontal * 10),
                               hintText: 'Enter your OTP',
                               hintStyle: TextStyle(color: Colors.black)),
+                              keyboardType: TextInputType.number,
                           onChanged: (value) {
                             setState(() {
                               
