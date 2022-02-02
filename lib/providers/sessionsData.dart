@@ -73,9 +73,7 @@ class SessionsData with ChangeNotifier {
         throw error;
       }
 
-      _states.forEach((element) {
-        print(element.stateName);
-      });
+    
     } catch (e) {
       throw e;
     }
@@ -105,9 +103,7 @@ class SessionsData with ChangeNotifier {
         throw error;
       }
       _districts = loadedData;
-      _districts.forEach((element) {
-        print(element.districtName);
-      });
+     
     } catch (e) {
       throw e;
     }
