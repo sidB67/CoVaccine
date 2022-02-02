@@ -14,7 +14,7 @@ class _AuthPageState extends State<AuthPage> {
   String phNo = '';
   bool isLoading = false;
   @override
- 
+  TextEditingController _phoneController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -58,6 +58,7 @@ class _AuthPageState extends State<AuthPage> {
                       Flexible(
                         flex: 2,
                         child: TextField(
+                          controller: _phoneController,
                           decoration: InputDecoration(
                               border: InputBorder.none,
                               contentPadding: EdgeInsets.only(
@@ -73,7 +74,7 @@ class _AuthPageState extends State<AuthPage> {
                       Expanded(
                           flex: 1,
                           child: GestureDetector(
-                            onTap: () async {
+                            onTap:_phoneController.text.length==10? () async {
                               setState(() {
                                 isLoading = true;
                               });
@@ -102,11 +103,11 @@ class _AuthPageState extends State<AuthPage> {
                                   isLoading = false;
                                 });
                               }
-                            },
+                            }:null,
                             child: Container(
                               height: SizeConfig.safeBlockVertical * 50,
                               decoration: BoxDecoration(
-                                color: Colors.greenAccent,
+                                color:_phoneController.text.length==10? Colors.greenAccent:Colors.grey,
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Center(
