@@ -23,7 +23,7 @@ class _CertificatePageState extends State<CertificatePage> {
         title: Text('Certificate',style: TextStyle(color: Colors.black)),
         actions: [
           IconButton(
-            icon: Icon(Icons.logout),
+            icon: Icon(Icons.logout,color: Colors.black,),
             onPressed: Provider.of<Auth>(context).logout,
           ),
         ],
@@ -44,7 +44,7 @@ class _CertificatePageState extends State<CertificatePage> {
                         EdgeInsets.only(top: SizeConfig.safeBlockVertical * 50),
                     width: SizeConfig.safeBlockHorizontal * 300,
                     height: SizeConfig.safeBlockVertical * 300,
-                    child: Image.asset('asset/certificate.jpg'),
+                    child: Image.asset('asset/certificate.png'),
                   ),
                 ),
                 Container(
