@@ -24,7 +24,7 @@ class _DistrictSearchState extends State<DistrictSearch> {
     super.initState();
     date = formatter.format(DateTime.now());
     year = int.parse(formatter.format(DateTime.now()).split('-').last);
-    initialiseState();
+    
 
     setState(() {});
   }
@@ -53,9 +53,7 @@ class _DistrictSearchState extends State<DistrictSearch> {
     });
   }
 
-  void initialiseState() async {
-    await Provider.of<SessionsData>(context, listen: false).getStates();
-  }
+ 
 
   List<DropdownMenuItem<int>> getMenuItems(List<States> states) {
     List<DropdownMenuItem<int>> items = [];
@@ -96,9 +94,7 @@ class _DistrictSearchState extends State<DistrictSearch> {
     SizeConfig().init(context);
     print('build');
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        Provider.of<SessionsData>(context, listen: false).getStates();
-      }),
+      
       bottomNavigationBar: bab.BottomAppBar(
         selectedIndex: 1,
       ),

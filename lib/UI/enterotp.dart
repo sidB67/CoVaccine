@@ -22,7 +22,7 @@ class _EnterOTPState extends State<EnterOTP> {
         automaticallyImplyLeading: false,
       ),
       bottomNavigationBar: bab.BottomAppBar(
-        selectedIndex: 1,
+        selectedIndex: 2,
       ),
       body: isLoading
           ? Center(

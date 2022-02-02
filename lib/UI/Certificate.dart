@@ -28,7 +28,7 @@ class _CertificatePageState extends State<CertificatePage> {
         automaticallyImplyLeading: false,
       ),
       bottomNavigationBar: bab.BottomAppBar(
-        selectedIndex: 1,
+        selectedIndex: 2,
       ),
       body: isLoading
           ? Center(

@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
    date = formatter.format(DateTime.now());
    year = int.parse(formatter.format(DateTime.now()).split('-').last);
-   
+   initialiseState();
     setState(() {
       
     });
@@ -48,7 +48,9 @@ class _HomePageState extends State<HomePage> {
       });
     });
   }
-  
+   void initialiseState() async {
+    await Provider.of<SessionsData>(context, listen: false).getStates();
+  }
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {

@@ -58,7 +58,7 @@ class Auth extends ChangeNotifier {
             "txnId": '$txnid',
           }));
       _token = jsonDecode(response.body)['token'];
-      final userData = json.encode({'token': _token});
+      final userData = json.encode({'token': _token , 'loginDate':DateTime.now()});
       final prefs = await SharedPreferences.getInstance();
       prefs.setString('userData', userData);
       notifyListeners();
@@ -117,7 +117,12 @@ class Auth extends ChangeNotifier {
     final extractedData =
         json.decode(prefs.getString('userData')!) as Map<String, dynamic>;
     _token = extractedData['token'];
-
+    final loginDate = extractedData['loginDate'];
+    final now = DateTime.now();
+    if((now.difference(loginDate).inMinutes>=15)){
+      logout();
+      return false;
+    }
     notifyListeners();
     _autoLogout();
     return true;
