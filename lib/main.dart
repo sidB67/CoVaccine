@@ -3,6 +3,7 @@ import 'package:covaccine/UI/LandingPage.dart';
 import 'package:covaccine/UI/district.dart';
 import 'package:covaccine/UI/enterotp.dart';
 import 'package:covaccine/UI/homepage.dart';
+import 'package:covaccine/UI/loadingScreen.dart';
 import 'package:covaccine/providers/auth.dart';
 import 'package:covaccine/providers/sessionsData.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +19,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider.value(value: SessionsData()),
-        ChangeNotifierProvider.value(value: Auth())
+        ChangeNotifierProvider(
+          create: (context) => Auth(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => SessionsData(),
+        )
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -29,8 +34,9 @@ class MyApp extends StatelessWidget {
           'land-page': (ctx) => LandingPage(),
           'enter-otp': (ctx) => EnterOTP(),
           'district-page': (ctx) => DistrictSearch(),
+          'loading-page': (ctx) => LoadingScreen(),
         },
-        initialRoute: 'home-page',
+        initialRoute: 'loading-page',
       ),
     );
   }

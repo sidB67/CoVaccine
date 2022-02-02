@@ -1,5 +1,7 @@
 import 'package:covaccine/UI/size_config.dart';
+import 'package:covaccine/providers/sessionsData.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 //this widget is for bottom navigation bar
 
@@ -11,13 +13,16 @@ class BottomAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     void _onItemTapped(int index) {
       if (index == 0) {
-        Navigator.pushNamed(context, 'home-page');
+        Provider.of<SessionsData>(context, listen: false).clearSessions2();
+        Navigator.pushReplacementNamed(context, 'home-page');
       }else if(index == 1){
-        Navigator.pushNamed(context, 'district-page');
+        Provider.of<SessionsData>(context, listen: false).clearSessions2();
+        Navigator.pushReplacementNamed(context, 'district-page');
 
       } 
       else if (index == 2) {
-        Navigator.pushNamed(context, 'land-page');
+        Provider.of<SessionsData>(context, listen: false).clearSessions2();
+        Navigator.pushReplacementNamed(context, 'land-page');
       }
     }
 

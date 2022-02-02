@@ -26,7 +26,7 @@ class SessionsData with ChangeNotifier {
   List _sessions = [];
   List _states = [];
   List _districts = [];
-  List _districtSessions=[];
+  List _districtSessions = [];
   Future<void> getSessions(String pincode, String date) async {
     print('called');
     final url = Uri.parse(
@@ -72,8 +72,6 @@ class SessionsData with ChangeNotifier {
         var error = responseData["error"];
         throw error;
       }
-
-    
     } catch (e) {
       throw e;
     }
@@ -103,12 +101,12 @@ class SessionsData with ChangeNotifier {
         throw error;
       }
       _districts = loadedData;
-     
     } catch (e) {
       throw e;
     }
     notifyListeners();
   }
+
   Future<void> getDistrictSessions(int district_id, String date) async {
     print('called');
     final url = Uri.parse(
@@ -134,7 +132,7 @@ class SessionsData with ChangeNotifier {
     }
     notifyListeners();
   }
-  
+
   List<Session> get session {
     return [..._sessions];
   }
@@ -142,10 +140,19 @@ class SessionsData with ChangeNotifier {
   List<States> get states {
     return [..._states];
   }
+
   List<District> get districts {
     return [..._districts];
   }
+
   List<Session> get districtSessions {
     return [..._districtSessions];
+  }
+
+  
+  void clearSessions2(){
+    _sessions = [];
+    _districtSessions=[];
+    notifyListeners();
   }
 }

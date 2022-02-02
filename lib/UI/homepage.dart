@@ -18,17 +18,18 @@ class _HomePageState extends State<HomePage> {
   String date = '';
   int year = 2021;
   bool isLoading = false;
-  bool isStatesLoading = false;
+  
   @override
   void initState() {
     super.initState();
 
     date = formatter.format(DateTime.now());
     year = int.parse(formatter.format(DateTime.now()).split('-').last);
-    initialiseState();
+    
     setState(() {});
   }
-
+ @override
+  
   void _pickDateDialog() {
     showDatePicker(
             context: context,
@@ -53,34 +54,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void initialiseState() async {
-    setState(() {
-      isStatesLoading = true;
-    });
-    try {
-      await Provider.of<SessionsData>(context, listen: false).getStates();
-    } catch (e) {
-      showDialog(
-          context: context,
-          builder: (_) {
-            return AlertDialog(
-              title: Text('Error Occured'),
-              content: Text(e.toString()),
-              actions: [
-                TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text('OK'))
-              ],
-            );
-          });
-    } finally {
-      setState(() {
-        isStatesLoading = false;
-      });
-    }
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -101,11 +75,7 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
         backgroundColor: Colors.white,
       ),
-      body: isStatesLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : Column(
+      body: Column(
               children: [
                 Container(
                   padding: EdgeInsets.only(

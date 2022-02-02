@@ -1,5 +1,6 @@
 import 'package:covaccine/UI/size_config.dart';
 import 'package:covaccine/providers/auth.dart';
+import 'package:covaccine/providers/sessionsData.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'BottomAppBar.dart' as bab;
@@ -12,6 +13,8 @@ class AuthPage extends StatefulWidget {
 class _AuthPageState extends State<AuthPage> {
   String phNo = '';
   bool isLoading = false;
+  @override
+ 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
