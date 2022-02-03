@@ -20,13 +20,14 @@ class _DistrictSearchState extends State<DistrictSearch> {
   var formatter = DateFormat('dd-MM-yyyy');
   String date = '';
   int year = 2021;
-
+  
   @override
   void initState() {
     super.initState();
     date = formatter.format(DateTime.now());
     year = int.parse(formatter.format(DateTime.now()).split('-').last);
-
+    selectedDistrict = null;
+    selectedState = null;
     setState(() {});
   }
 
@@ -205,13 +206,13 @@ class _DistrictSearchState extends State<DistrictSearch> {
                             top: SizeConfig.safeBlockVertical * 20,
                             bottom: SizeConfig.safeBlockVertical * 8),
                         child: MaterialButton(
-                          color: (selectedState !=null) && (selectedDistrict!=null) == false
-                              ? Colors.grey
-                              : Colors.greenAccent,
+                          color: (selectedState !=null) && (selectedDistrict!=null) 
+                              ? Colors.greenAccent
+                              : Colors.grey,
                           shape: CircleBorder(),
-                          onPressed: (selectedState ==null) && (selectedDistrict==null) == false
-                              ? () {}
-                              : () async {
+                          onPressed: (selectedState !=null) && (selectedDistrict!=null) 
+                             
+                              ?() async {
                                   setState(() {
                                     isLoading = true;
                                   });
@@ -242,7 +243,7 @@ class _DistrictSearchState extends State<DistrictSearch> {
                                       isLoading = false;
                                     });
                                   }
-                                },
+                                } : () {},
                           child: Padding(
                               padding: const EdgeInsets.all(10),
                               child: Icon(Icons.search)),
@@ -271,9 +272,29 @@ class _DistrictSearchState extends State<DistrictSearch> {
                       )
                     : RefreshIndicator(
                         onRefresh: () async {
-                          await Provider.of<SessionsData>(context,
+                          try{
+                             await Provider.of<SessionsData>(context,
                                   listen: false)
-                              .getSessions(pincode, date);
+                              .getDistrictSessions(selectedDistrict, date);
+                          }catch(e){
+                            showDialog(
+                                context: context,
+                                builder: (_) {
+                                  return AlertDialog(
+                                    title: Text('Error Occured'),
+                                    content: Text(
+                                        'Try again by putting values'),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text('OK'))
+                                    ],
+                                  );
+                                });
+                          }
+                         
                         },
                         child: ListView.builder(
                           itemCount: districtSessions.length,

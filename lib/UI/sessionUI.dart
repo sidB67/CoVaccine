@@ -2,10 +2,10 @@ import 'package:covaccine/models/sessions.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 class SessionUi extends StatelessWidget {
-  static void navigateTo(double lat, double lng) async {
-   var uri = Uri.parse("google.navigation:q=$lat,$lng&mode=d");
-   if (await canLaunch(uri.toString())) {
-      await launch(uri.toString());
+  static void navigateTo(String query) async {
+   var uri = Uri.parse("https://www.google.com/maps/search/?api=1&query=$query");
+   if (await launch(uri.toString())) {
+      // await launch(uri.toString());
    } else {
       throw 'Could not launch ${uri.toString()}';
    }
@@ -130,9 +130,30 @@ class SessionUi extends StatelessWidget {
             ),
             GestureDetector(
               onTap: (){
-                navigateTo(session.lat, session.long);
-                print(session.lat);
-                print(session.long);
+                try{
+                  print(session.name);
+                  print(session.address);
+                  String address = session.name + ' ' + session.address;
+                navigateTo(address);
+                }catch(e){
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text("Error"),
+                        content: Text("Could not launch the map"),
+                        actions: <Widget>[
+                          TextButton(
+                            child: Text("Ok"),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          )
+                        ],
+                      );
+                    },
+                  );
+                }
               },
               child: Container(
                 width: 100,

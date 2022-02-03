@@ -120,20 +120,18 @@ class _HomePageState extends State<HomePage> {
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 child: TextField(
-                                  keyboardType: TextInputType.number,
-                                  inputFormatters: [
-                                    LengthLimitingTextInputFormatter(6)
-                                  ],
-                                  decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      hintText: "110051"),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      pincode = value;
-                                    });
-                                    
-                                  }
-                                )),
+                                    keyboardType: TextInputType.number,
+                                    inputFormatters: [
+                                      LengthLimitingTextInputFormatter(6)
+                                    ],
+                                    decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        hintText: "110051"),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        pincode = value;
+                                      });
+                                    })),
                           ],
                         )),
                         SizedBox(width: 10),
@@ -180,38 +178,42 @@ class _HomePageState extends State<HomePage> {
                       margin: EdgeInsets.only(
                           top: SizeConfig.safeBlockVertical * 20),
                       child: MaterialButton(
-                        color: pincode.length==6? Colors.greenAccent:Colors.grey,
+                        color: pincode.length == 6
+                            ? Colors.greenAccent
+                            : Colors.grey,
                         shape: CircleBorder(),
-                        onPressed: pincode.length==6? () async {
-                          setState(() {
-                            isLoading = true;
-                          });
-                          try {
-                            await Provider.of<SessionsData>(context,
-                                    listen: false)
-                                .getSessions(pincode, date);
-                          } catch (e) {
-                            showDialog(
-                                context: context,
-                                builder: (_) {
-                                  return AlertDialog(
-                                    title: Text('Error Occured'),
-                                    content: Text(e.toString()),
-                                    actions: [
-                                      TextButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text('OK'))
-                                    ],
-                                  );
+                        onPressed: pincode.length == 6
+                            ? () async {
+                                setState(() {
+                                  isLoading = true;
                                 });
-                          } finally {
-                            setState(() {
-                              isLoading = false;
-                            });
-                          }
-                        }:(){},
+                                try {
+                                  await Provider.of<SessionsData>(context,
+                                          listen: false)
+                                      .getSessions(pincode, date);
+                                } catch (e) {
+                                  showDialog(
+                                      context: context,
+                                      builder: (_) {
+                                        return AlertDialog(
+                                          title: Text('Error Occured'),
+                                          content: Text(e.toString()),
+                                          actions: [
+                                            TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text('OK'))
+                                          ],
+                                        );
+                                      });
+                                } finally {
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                }
+                              }
+                            : () {},
                         child: Padding(
                             padding: const EdgeInsets.all(10),
                             child: Icon(Icons.search)),
@@ -225,24 +227,42 @@ class _HomePageState extends State<HomePage> {
         },
         body: isLoading
             ? Center(
-            child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(),
               )
             : Container(
-              alignment: Alignment.center,
+                alignment: Alignment.center,
                 child: sessions.length == 0
                     ? Text(
-                      'No Match Found',
-                      style: TextStyle(
-                        fontSize: SizeConfig.safeBlockVertical * 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    
-                  )
+                        'No Match Found',
+                        style: TextStyle(
+                          fontSize: SizeConfig.safeBlockVertical * 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
                     : RefreshIndicator(
                         onRefresh: () async {
-                          await Provider.of<SessionsData>(context,
-                                  listen: false)
-                              .getSessions(pincode, date);
+                          try {
+                            await Provider.of<SessionsData>(context,
+                                    listen: false)
+                                .getSessions(pincode, date);
+                          } catch (e) {
+                            showDialog(
+                                context: context,
+                                builder: (_) {
+                                  return AlertDialog(
+                                    title: Text('Error Occured'),
+                                    content:
+                                        Text('Try again by putting values'),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text('OK'))
+                                    ],
+                                  );
+                                });
+                          }
                         },
                         child: ListView.builder(
                           itemCount: sessions.length,
