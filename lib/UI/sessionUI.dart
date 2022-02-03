@@ -1,7 +1,15 @@
 import 'package:covaccine/models/sessions.dart';
 import 'package:flutter/material.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 class SessionUi extends StatelessWidget {
+  static void navigateTo(double lat, double lng) async {
+   var uri = Uri.parse("google.navigation:q=$lat,$lng&mode=d");
+   if (await canLaunch(uri.toString())) {
+      await launch(uri.toString());
+   } else {
+      throw 'Could not launch ${uri.toString()}';
+   }
+}
   SessionUi({required this.session});
   List<TableRow> _buildSlots() {
     List<TableRow> l = [
@@ -40,8 +48,8 @@ class SessionUi extends StatelessWidget {
           title: Column(children: [
             Container(
                 height: 100,
-                child: Image.network(
-                    'https://mk0ehealtheletsj3t14.kinstacdn.com/wp-content/uploads/2015/07/hospital-clipart.png.jpg')),
+                child: Image.asset(
+                    'asset/hospital.jpg')),
             SizedBox(height: 10),
             Text(
               session.name,
@@ -118,6 +126,32 @@ class SessionUi extends StatelessWidget {
                 },
                 border: TableBorder.all(),
                 children: _buildSlots(),
+              ),
+            ),
+            GestureDetector(
+              onTap: (){
+                navigateTo(session.lat, session.long);
+                print(session.lat);
+                print(session.long);
+              },
+              child: Container(
+                width: 100,
+                height: 30,
+                margin: EdgeInsets.only(top:5,bottom: 5),
+                decoration: BoxDecoration(
+                  color: Colors.greenAccent,
+                  borderRadius: BorderRadius.circular(20)
+                ),
+                child: Center(
+                  child: Text(
+                    'Navigate',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600
+                    ),
+                  ),
+                ),
               ),
             )
           ],

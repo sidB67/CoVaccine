@@ -8,6 +8,8 @@ class Session {
     required this.minAgeLimit,
     required this.vaccine,
     required this.slots,
+    required this.lat,
+    required this.long,
   });
 
   late String name;
@@ -18,6 +20,8 @@ class Session {
   late int minAgeLimit;
   late String vaccine;
   late List<String> slots;
+  late double lat;
+  late double long;
 
   factory Session.fromJson(Map<String, dynamic> json) => Session(
         name: json["name"],
@@ -28,5 +32,7 @@ class Session {
         minAgeLimit: json["min_age_limit"],
         vaccine: json["vaccine"],
         slots: List<String>.from(json["slots"].map((x) => x)),
+        lat: json["lat"].toDouble(),
+        long: json["long"].toDouble(),
       );
 }
