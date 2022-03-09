@@ -4,6 +4,7 @@ import 'package:covaccine/UI/district.dart';
 import 'package:covaccine/UI/enterotp.dart';
 import 'package:covaccine/UI/homepage.dart';
 import 'package:covaccine/UI/loadingScreen.dart';
+import 'package:covaccine/UI/new_homepage.dart';
 import 'package:covaccine/providers/auth.dart';
 import 'package:covaccine/providers/sessionsData.dart';
 import 'package:flutter/material.dart';
@@ -28,9 +29,11 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
-        theme: ThemeData(primaryColor: Colors.white,),
+        theme: ThemeData(
+          primaryColor: Colors.white,
+        ),
         routes: {
-          'home-page': (ctx) => HomePage(),
+          'home-page': (ctx) => NewHomepage(),
           'land-page': (ctx) => LandingPage(),
           'enter-otp': (ctx) => EnterOTP(),
           'district-page': (ctx) => DistrictSearch(),
