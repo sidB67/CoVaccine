@@ -33,11 +33,12 @@ class MyApp extends StatelessWidget {
           primaryColor: Colors.white,
         ),
         routes: {
-          'home-page': (ctx) => NewHomepage(),
+          'home-page': (ctx) => HomePage(),
           'land-page': (ctx) => LandingPage(),
           'enter-otp': (ctx) => EnterOTP(),
           'district-page': (ctx) => DistrictSearch(),
           'loading-page': (ctx) => LoadingScreen(),
+          'new-homepage': (ctx) => NewHomepage(),
         },
         initialRoute: 'loading-page',
       ),

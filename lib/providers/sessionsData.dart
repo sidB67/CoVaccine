@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:covaccine/models/sessions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
@@ -31,24 +30,46 @@ class SessionsData with ChangeNotifier {
     print('called');
     final url = Uri.parse(
         "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=$pincode&date=$date");
+
+    print(url);
+    final response = await http.get(url);
     try {
-      final response = await http.get(url);
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
-        Iterable extractedData = responseData["sessions"];
-        List loadedSessions =
-            extractedData.map((json) => Session.fromJson(json)).toList();
-        _sessions = loadedSessions;
+        final extractedData = responseData["sessions"] as List;
+        extractedData.forEach((element) {
+          List<String> slotList = [];
+          final extractedSlots = element["slots"] as List;
+
+          extractedSlots.forEach((element) {
+            slotList.add(element["time"]);
+          });
+
+          print(slotList);
+          _sessions.add(Session(
+            name: element["name"],
+            address: element["address"],
+            feeType: element["fee_type"],
+            availableCapacity: element["available_capacity"],
+            fee: element["fee"],
+            minAgeLimit: element["min_age_limit"],
+            vaccine: element["vaccine"],
+            slots: slotList,
+            lat: element["lat"].toDouble(),
+            long: element["long"].toDouble(),
+          ));
+        });
       } else {
         final responseData = jsonDecode(response.body);
         var error = responseData["error"];
         throw error;
       }
-
-      print(_sessions.length);
     } catch (e) {
-      throw e;
+      rethrow;
     }
+
+    print(_sessions.length);
+
     notifyListeners();
   }
 
@@ -111,24 +132,41 @@ class SessionsData with ChangeNotifier {
     print('called');
     final url = Uri.parse(
         "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id=$district_id&date=$date");
+    print(url);
+    final response = await http.get(url);
     try {
-      final response = await http.get(url);
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
-        Iterable extractedData = responseData["sessions"];
-        List loadedSessions =
-            extractedData.map((json) => Session.fromJson(json)).toList();
-        _districtSessions = loadedSessions;
+        final extractedData = responseData["sessions"] as List;
+        extractedData.forEach((element) {
+          List<String> slotList = [];
+          final extractedSlots = element["slots"] as List;
+
+          extractedSlots.forEach((element) {
+            slotList.add(element["time"]);
+          });
+
+          print(slotList);
+          _districtSessions.add(Session(
+            name: element["name"],
+            address: element["address"],
+            feeType: element["fee_type"],
+            availableCapacity: element["available_capacity"],
+            fee: element["fee"],
+            minAgeLimit: element["min_age_limit"],
+            vaccine: element["vaccine"],
+            slots: slotList,
+            lat: element["lat"].toDouble(),
+            long: element["long"].toDouble(),
+          ));
+        });
       } else {
         final responseData = jsonDecode(response.body);
         var error = responseData["error"];
         throw error;
       }
-
-      print(_districtSessions.length);
     } catch (e) {
-      print(e);
-      throw e;
+      rethrow;
     }
     notifyListeners();
   }
@@ -149,10 +187,9 @@ class SessionsData with ChangeNotifier {
     return [..._districtSessions];
   }
 
-  
-  void clearSessions2(){
+  void clearSessions2() {
     _sessions = [];
-    _districtSessions=[];
+    _districtSessions = [];
     notifyListeners();
   }
 }

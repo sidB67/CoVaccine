@@ -23,16 +23,19 @@ class Session {
   late double lat;
   late double long;
 
-  factory Session.fromJson(Map<String, dynamic> json) => Session(
-        name: json["name"],
-        address: json["address"],
-        feeType: json["fee_type"],
-        availableCapacity: json["available_capacity"],
-        fee: json["fee"],
-        minAgeLimit: json["min_age_limit"],
-        vaccine: json["vaccine"],
-        slots: List<String>.from(json["slots"].map((x) => x)),
-        lat: json["lat"].toDouble(),
-        long: json["long"].toDouble(),
-      );
+  // factory Session.fromJson(Map<String, dynamic> json) {
+
+  //   return Session(
+  //     name: json["name"],
+  //     address: json["address"],
+  //     feeType: json["fee_type"],
+  //     availableCapacity: json["available_capacity"],
+  //     fee: json["fee"],
+  //     minAgeLimit: json["min_age_limit"],
+  //     vaccine: json["vaccine"],
+  //     slots: slotList,
+  //     lat: json["lat"].toDouble(),
+  //     long: json["long"].toDouble(),
+  //   );
+  // }
 }
