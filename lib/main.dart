@@ -4,7 +4,7 @@ import 'package:covaccine/UI/district.dart';
 import 'package:covaccine/UI/enterotp.dart';
 import 'package:covaccine/UI/homepage.dart';
 import 'package:covaccine/UI/loadingScreen.dart';
-import 'package:covaccine/UI/new_homepage.dart';
+import 'package:covaccine/UI/new_homepage/new_homepage.dart';
 import 'package:covaccine/providers/auth.dart';
 import 'package:covaccine/providers/sessionsData.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
           'loading-page': (ctx) => LoadingScreen(),
           'new-homepage': (ctx) => NewHomepage(),
         },
-        initialRoute: 'loading-page',
+        initialRoute: 'new-homepage',
       ),
     );
   }
