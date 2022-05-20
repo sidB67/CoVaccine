@@ -81,7 +81,6 @@ class _AuthPageState extends State<AuthPage> {
                           child: GestureDetector(
                             onTap: phNo.length == 10
                                 ? () async {
-                                    print('hit');
                                     setState(() {
                                       isLoading = true;
                                     });

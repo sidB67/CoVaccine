@@ -27,13 +27,12 @@ class Auth extends ChangeNotifier {
     final file = File('$path/$fileName');
     await file.writeAsBytes(bytes, flush: true);
     OpenFile.open('$path/$fileName');
-   
   }
 
   Future<void> getOTP(String phNo) async {
     final url =
         Uri.parse('https://cdn-api.co-vin.in/api/v2/auth/public/generateOTP');
-    print(phNo);
+
     try {
       var response = await http.post(url,
           headers: {'Content-Type': 'application/json'},
@@ -57,12 +56,19 @@ class Auth extends ChangeNotifier {
             "otp": '$postOtp',
             "txnId": '$txnid',
           }));
-      _token = jsonDecode(response.body)['token'];
-      final userData = json.encode({'token': _token , 'loginDate':DateTime.now().millisecondsSinceEpoch});
-      final prefs = await SharedPreferences.getInstance();
-      prefs.setString('userData', userData);
-      notifyListeners();
-      _autoLogout();
+      if (response.statusCode == 200) {
+        _token = jsonDecode(response.body)['token'];
+        final userData = json.encode({
+          'token': _token,
+          'loginDate': DateTime.now().millisecondsSinceEpoch
+        });
+        final prefs = await SharedPreferences.getInstance();
+        prefs.setString('userData', userData);
+        notifyListeners();
+        _autoLogout();
+      } else {
+        throw 'Incorrect OTP Entered';
+      }
     } catch (e) {
       throw e;
     }
@@ -72,22 +78,20 @@ class Auth extends ChangeNotifier {
     final url = Uri.parse(
       'https://cdn-api.co-vin.in/api/v2/registration/certificate/public/download?beneficiary_reference_id=$benefID',
     );
-    try{
+    try {
       var response = await http.get(url, headers: {
-      "accept": "application/pdf",
-      "content-type": "application/json",
-      "authorization": "Bearer $_token"
-    });
-    if(response.statusCode==200){
-      await saveAndLaunchFile(response.bodyBytes, 'Certificate.pdf');
-    }else{
-      throw 'Please Check Benefeciary ID';
-    }
-    
-    }catch(e){
+        "accept": "application/pdf",
+        "content-type": "application/json",
+        "authorization": "Bearer $_token"
+      });
+      if (response.statusCode == 200) {
+        await saveAndLaunchFile(response.bodyBytes, 'Certificate.pdf');
+      } else {
+        throw 'Please Check Benefeciary ID';
+      }
+    } catch (e) {
       throw e;
     }
-    
   }
 
   void logout() async {
@@ -119,7 +123,7 @@ class Auth extends ChangeNotifier {
     _token = extractedData['token'];
     final loginDate = extractedData['loginDate'];
     final now = DateTime.now().millisecondsSinceEpoch;
-    if((now-loginDate>=15*60*1000)){
+    if ((now - loginDate >= 15 * 60 * 1000)) {
       logout();
       return false;
     }

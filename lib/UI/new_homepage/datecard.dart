@@ -1,4 +1,5 @@
 import 'package:covaccine/UI/size_config.dart';
+import 'package:covaccine/models/info.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -6,8 +7,10 @@ import 'package:intl/intl.dart';
 import 'backgroundcard.dart';
 
 class DateCard extends StatefulWidget {
-  DateCard({Key? key, required this.date}) : super(key: key);
-  String date;
+  DateCard({
+    Key? key,
+  }) : super(key: key);
+
   @override
   State<DateCard> createState() => _DateCardState();
 }
@@ -18,7 +21,7 @@ class _DateCardState extends State<DateCard> {
   int year = 2021;
   @override
   void initState() {
-    widget.date = formatter.format(DateTime.now());
+    Info.date = formatter.format(DateTime.now());
     year = int.parse(formatter.format(DateTime.now()).split('-').last);
     super.initState();
   }
@@ -41,8 +44,8 @@ class _DateCardState extends State<DateCard> {
       }
       setState(() {
         //for rebuilding the ui
-        widget.date = formatter.format(pickedDate);
-        print(widget.date);
+        Info.date = formatter.format(pickedDate);
+        print(Info.date);
       });
     });
   }
@@ -81,7 +84,7 @@ class _DateCardState extends State<DateCard> {
                 ),
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  '${widget.date}',
+                  '${Info.date}',
                   style: TextStyle(fontSize: 16),
                 )),
           ),

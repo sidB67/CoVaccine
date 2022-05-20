@@ -12,13 +12,14 @@ class EnterOTP extends StatefulWidget {
 class _EnterOTPState extends State<EnterOTP> {
   String otp = '';
   bool isLoading = false;
+  bool isError = false;
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text('Confirm OTP',style: TextStyle(color: Colors.black)),
+        title: Text('Confirm OTP', style: TextStyle(color: Colors.black)),
         automaticallyImplyLeading: false,
       ),
       bottomNavigationBar: bab.BottomAppBar(
@@ -55,18 +56,16 @@ class _EnterOTPState extends State<EnterOTP> {
                       Flexible(
                         flex: 2,
                         child: TextField(
-                          
                           decoration: InputDecoration(
                               border: InputBorder.none,
                               contentPadding: EdgeInsets.only(
                                   left: SizeConfig.safeBlockHorizontal * 10),
                               hintText: 'Enter your OTP',
                               hintStyle: TextStyle(color: Colors.black)),
-                              keyboardType: TextInputType.number,
+                          keyboardType: TextInputType.number,
                           onChanged: (value) {
                             setState(() {
-                              
-                            otp = value;
+                              otp = value;
                             });
                           },
                         ),
@@ -74,42 +73,51 @@ class _EnterOTPState extends State<EnterOTP> {
                       Expanded(
                           flex: 1,
                           child: GestureDetector(
-                            onTap: otp.length ==6? () async {
-                              print('pressed');
-                              setState(() {
-                                isLoading = true;
-                              });
-                              try {
-                                await Provider.of<Auth>(context, listen: false)
-                                    .submitOtp(otp);
-                                Navigator.pushReplacementNamed(
-                                    context, 'land-page');
-                              } catch (e) {
-                                showDialog(
-                                    context: context,
-                                    builder: (_) {
-                                      return AlertDialog(
-                                        title: Text('Error Occured'),
-                                        content: Text(e.toString()),
-                                        actions: [
-                                          TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: Text('OK'))
-                                        ],
-                                      );
+                            onTap: otp.length == 6
+                                ? () async {
+                                    print('pressed');
+                                    setState(() {
+                                      isLoading = true;
                                     });
-                              } finally {
-                                setState(() {
-                                  isLoading = false;
-                                });
-                              }
-                            }:null,
+                                    try {
+                                      await Provider.of<Auth>(context,
+                                              listen: false)
+                                          .submitOtp(otp);
+                                      isError = false;
+                                    } catch (e) {
+                                      isError = true;
+                                      showDialog(
+                                          context: context,
+                                          builder: (_) {
+                                            return AlertDialog(
+                                              title: Text('Error Occured'),
+                                              content: Text(e.toString()),
+                                              actions: [
+                                                TextButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: Text('OK'))
+                                              ],
+                                            );
+                                          });
+                                    } finally {
+                                      if (isError == false) {
+                                        Navigator.pushReplacementNamed(
+                                            context, 'land-page');
+                                      }
+                                      setState(() {
+                                        isLoading = false;
+                                      });
+                                    }
+                                  }
+                                : null,
                             child: Container(
                               height: SizeConfig.safeBlockVertical * 50,
                               decoration: BoxDecoration(
-                                color: otp.length==6? Colors.greenAccent:Colors.grey,
+                                color: otp.length == 6
+                                    ? Colors.greenAccent
+                                    : Colors.grey,
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Center(

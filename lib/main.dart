@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
           'loading-page': (ctx) => LoadingScreen(),
           'new-homepage': (ctx) => NewHomepage(),
         },
-        initialRoute: 'new-homepage',
+        initialRoute: 'home-page',
       ),
     );
   }
